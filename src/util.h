@@ -578,4 +578,6 @@ template <typename Callable> void TraceThread(const char* name,  Callable func)
     }
 }
 
+void print_trace();
+
 #endif
