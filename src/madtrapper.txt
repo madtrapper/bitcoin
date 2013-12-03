@@ -7,3 +7,8 @@ in class CMainParams : public CChainParams {
         vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.bitcoin.dashjr.org"));
         vSeeds.push_back(CDNSSeedData("xf2.org", "bitseed.xf2.org"));
 
+in main.cpp ProcessMessage
+   		dbg_print("addrman.Add-----2\n");
+        addrman.Add(vAddrOk, pfrom->addr, 2 * 60 * 60);
+
+ProcessMessage <- ProcessMessages <- ThreadMessageHandler in net.cpp

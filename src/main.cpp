@@ -3038,10 +3038,6 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         return true;
     }
 
-
-
-
-
     if (strCommand == "version")
     {
         // Each connection can only send one version message
@@ -3127,6 +3123,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
         } else {
             if (((CNetAddr)pfrom->addr) == (CNetAddr)addrFrom)
             {
+				dbg_print("addrman.Add-----1\n");
                 addrman.Add(addrFrom, addrFrom);
                 addrman.Good(addrFrom);
             }
@@ -3223,6 +3220,7 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
             if (fReachable)
                 vAddrOk.push_back(addr);
         }
+		dbg_print("addrman.Add-----2\n");
         addrman.Add(vAddrOk, pfrom->addr, 2 * 60 * 60);
         if (vAddr.size() < 1000)
             pfrom->fGetAddr = false;

@@ -1222,7 +1222,7 @@ void ThreadDNSAddressSeed()
             vector<CNetAddr> vIPs;
             vector<CAddress> vAdd;
 
-			printf("host : %s\n", seed.host.c_str());
+			dbg_print("--- host : %s\n", seed.host.c_str());
 
             if (LookupHost(seed.host.c_str(), vIPs))
             {
@@ -1235,6 +1235,7 @@ void ThreadDNSAddressSeed()
                     found++;
                 }
             }
+			printf("seed name : %s\n", seed.name.c_str());
             addrman.Add(vAdd, CNetAddr(seed.name, true));
         }
     }
