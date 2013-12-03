@@ -435,8 +435,11 @@ public:
                 nAdd += Add_(*it, source, nTimePenalty) ? 1 : 0;
             Check();
         }
-        if (nAdd)
+        if (nAdd) {
             LogPrint("addrman", "Added %i addresses from %s: %i tried, %i new\n", nAdd, source.ToString().c_str(), nTried, nNew);
+			print_trace();
+			printf("Added %i addresses from %s: %i tried, %i new\n", nAdd, source.ToString().c_str(), nTried, nNew);
+		}
         return nAdd > 0;
     }
 

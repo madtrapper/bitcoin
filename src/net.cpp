@@ -1213,6 +1213,7 @@ void ThreadDNSAddressSeed()
     int found = 0;
 
     LogPrintf("Loading addresses from DNS seeds (could take a while)\n");
+	printf("Loading addresses from DNS seeds (could take a while)\n");
 
     BOOST_FOREACH(const CDNSSeedData &seed, vSeeds) {
         if (HaveNameProxy()) {
@@ -1220,6 +1221,9 @@ void ThreadDNSAddressSeed()
         } else {
             vector<CNetAddr> vIPs;
             vector<CAddress> vAdd;
+
+			printf("host : %s\n", seed.host.c_str());
+
             if (LookupHost(seed.host.c_str(), vIPs))
             {
                 BOOST_FOREACH(CNetAddr& ip, vIPs)

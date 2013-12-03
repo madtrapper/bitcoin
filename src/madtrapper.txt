@@ -1,0 +1,9 @@
+LookupHost in ThreadDNSAddressSeed
+
+in class CMainParams : public CChainParams {
+   //pre define dns
+        vSeeds.push_back(CDNSSeedData("bitcoin.sipa.be", "seed.bitcoin.sipa.be"));
+        vSeeds.push_back(CDNSSeedData("bluematt.me", "dnsseed.bluematt.me"));
+        vSeeds.push_back(CDNSSeedData("dashjr.org", "dnsseed.bitcoin.dashjr.org"));
+        vSeeds.push_back(CDNSSeedData("xf2.org", "bitseed.xf2.org"));
+

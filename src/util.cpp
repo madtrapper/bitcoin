@@ -13,6 +13,7 @@
 #include "version.h"
 
 #include <stdarg.h>
+#include <execinfo.h>
 
 #ifndef WIN32
 // for posix_fallocate
