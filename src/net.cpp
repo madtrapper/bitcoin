@@ -464,6 +464,7 @@ CNode* FindNode(const CService& addr)
 
 CNode* ConnectNode(CAddress addrConnect, const char *pszDest)
 {
+	dbg_print("ConnectNode---1\n");
     if (pszDest == NULL) {
         if (IsLocal(addrConnect))
             return NULL;
