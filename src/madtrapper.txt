@@ -12,3 +12,6 @@ in main.cpp ProcessMessage
         addrman.Add(vAddrOk, pfrom->addr, 2 * 60 * 60);
 
 ProcessMessage <- ProcessMessages <- ThreadMessageHandler in net.cpp
+
+GetMyExternalIP2 
+GetMyExternalIP in net.cpp

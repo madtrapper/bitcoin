@@ -40,7 +40,9 @@ using namespace boost;
 
 static const int MAX_OUTBOUND_CONNECTIONS = 8;
 
-bool OpenNetworkConnection(const CAddress& addrConnect, CSemaphoreGrant *grantOutbound = NULL, const char *strDest = NULL, bool fOneShot = false);
+bool OpenNetworkConnection(const CAddress& addrConnect, 
+						   CSemaphoreGrant *grantOutbound = NULL, 
+						   const char *strDest = NULL, bool fOneShot = false);
 
 
 struct LocalServiceInfo {
@@ -107,7 +109,9 @@ bool GetLocal(CService& addr, const CNetAddr *paddrPeer)
     int nBestReachability = -1;
     {
         LOCK(cs_mapLocalHost);
-        for (map<CNetAddr, LocalServiceInfo>::iterator it = mapLocalHost.begin(); it != mapLocalHost.end(); it++)
+        for (map<CNetAddr, LocalServiceInfo>::iterator it = mapLocalHost.begin(); 
+			 it != mapLocalHost.end(); 
+			 it++)
         {
             int nScore = (*it).second.nScore;
             int nReachability = (*it).first.GetReachabilityFrom(paddrPeer);
@@ -298,7 +302,10 @@ bool IsReachable(const CNetAddr& addr)
     return vfReachable[net] && !vfLimited[net];
 }
 
-bool GetMyExternalIP2(const CService& addrConnect, const char* pszGet, const char* pszKeyword, CNetAddr& ipRet)
+bool GetMyExternalIP2(const CService& addrConnect, 
+					  const char* pszGet, 
+					  const char* pszKeyword, 
+					  CNetAddr& ipRet)
 {
     SOCKET hSocket;
     if (!ConnectSocket(addrConnect, hSocket))
@@ -409,12 +416,10 @@ void ThreadGetMyExternalIP()
     if (GetMyExternalIP(addrLocalHost))
     {
         LogPrintf("GetMyExternalIP() returned %s\n", addrLocalHost.ToStringIP().c_str());
+		dbg_print("GetMyExternalIP() returned %s\n", addrLocalHost.ToStringIP().c_str());
         AddLocal(addrLocalHost, LOCAL_HTTP);
     }
 }
-
-
-
 
 
 void AddressCurrentlyConnected(const CService& addr)
