@@ -3032,6 +3032,9 @@ bool static ProcessMessage(CNode* pfrom, string strCommand, CDataStream& vRecv)
 {
     RandAddSeedPerfmon();
     LogPrint("net", "received: %s (%"PRIszu" bytes)\n", strCommand.c_str(), vRecv.size());
+	dbg_print("===> From : %s, received: %s (%"PRIszu" bytes)\n",
+			  pfrom->addr.ToString().c_str(),
+			  strCommand.c_str(), vRecv.size());
     if (mapArgs.count("-dropmessagestest") && GetRand(atoi(mapArgs["-dropmessagestest"])) == 0)
     {
         LogPrintf("dropmessagestest DROPPING RECV MESSAGE\n");
@@ -3845,21 +3848,26 @@ bool ProcessMessages(CNode* pfrom)
 
 bool SendMessages(CNode* pto, bool fSendTrickle)
 {
+	//dbg_print("SendMessages to Node : %s\n", pto->addr.ToString().c_str());
     {
         // Don't send anything until we get their version message
-        if (pto->nVersion == 0)
+        if (pto->nVersion == 0) {
+			dbg_print("SendMessages to Node : %s ----1\n", pto->addr.ToString().c_str());
             return true;
+		}
 
         //
         // Message: ping
         //
         bool pingSend = false;
         if (pto->fPingQueued) {
+			dbg_print("SendMessages to Node : %s ----2\n", pto->addr.ToString().c_str());
             // RPC ping request by user
             pingSend = true;
         }
         if (pto->nLastSend && GetTime() - pto->nLastSend > 30 * 60 && pto->vSendMsg.empty()) {
             // Ping automatically sent as a keepalive
+			dbg_print("SendMessages to Node : %s ----3\n", pto->addr.ToString().c_str());
             pingSend = true;
         }
         if (pingSend) {
@@ -3873,10 +3881,12 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                 // Take timestamp as close as possible before transmitting ping
                 pto->nPingUsecStart = GetTimeMicros();
                 pto->PushMessage("ping", nonce);
+				dbg_print("SendMessages to Node : %s ----4\n", pto->addr.ToString().c_str());
             } else {
                 // Peer is too old to support ping command with nonce, pong will never arrive, disable timing
                 pto->nPingUsecStart = 0;
                 pto->PushMessage("ping");
+				dbg_print("SendMessages to Node : %s ----5\n", pto->addr.ToString().c_str());
             }
         }
 
@@ -3898,6 +3908,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                         CAddress addr = GetLocalAddress(&pnode->addr);
                         if (addr.IsRoutable())
                             pnode->PushAddress(addr);
+						dbg_print("SendMessages to Node : %s ----6\n", pto->addr.ToString().c_str());
                     }
                 }
             }
@@ -3923,11 +3934,14 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                         pto->PushMessage("addr", vAddr);
                         vAddr.clear();
                     }
+					dbg_print("SendMessages to Node : %s ----7\n", pto->addr.ToString().c_str());
                 }
             }
             pto->vAddrToSend.clear();
-            if (!vAddr.empty())
+            if (!vAddr.empty()) {
                 pto->PushMessage("addr", vAddr);
+				dbg_print("SendMessages to Node : %s ----8\n", pto->addr.ToString().c_str());
+			}
         }
 
         TRY_LOCK(cs_main, lockMain);
@@ -3938,6 +3952,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
         if (pto->fStartSync && !fImporting && !fReindex) {
             pto->fStartSync = false;
             PushGetBlocks(pto, chainActive.Tip(), uint256(0));
+			dbg_print("SendMessages to Node : %s ----9\n", pto->addr.ToString().c_str());
         }
 
         // Resend wallet transactions that haven't gotten in a block yet
@@ -3946,6 +3961,7 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
         if (!fReindex && !fImporting && !IsInitialBlockDownload())
         {
             g_signals.Broadcast();
+			dbg_print("SendMessages to Node : %s ----10\n", pto->addr.ToString().c_str());
         }
 
         //
@@ -3987,14 +4003,17 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                     if (vInv.size() >= 1000)
                     {
                         pto->PushMessage("inv", vInv);
+						dbg_print("SendMessages to Node : %s ----11\n", pto->addr.ToString().c_str());
                         vInv.clear();
                     }
                 }
             }
             pto->vInventoryToSend = vInvWait;
         }
-        if (!vInv.empty())
+        if (!vInv.empty()) {
             pto->PushMessage("inv", vInv);
+			dbg_print("SendMessages to Node : %s ----12\n", pto->addr.ToString().c_str());
+		}
 
 
         //
@@ -4013,13 +4032,16 @@ bool SendMessages(CNode* pto, bool fSendTrickle)
                 if (vGetData.size() >= 1000)
                 {
                     pto->PushMessage("getdata", vGetData);
+					dbg_print("SendMessages to Node : %s ----13\n", pto->addr.ToString().c_str());
                     vGetData.clear();
                 }
             }
             pto->mapAskFor.erase(pto->mapAskFor.begin());
         }
-        if (!vGetData.empty())
+        if (!vGetData.empty()) {
             pto->PushMessage("getdata", vGetData);
+			dbg_print("SendMessages to Node : %s ----14\n", pto->addr.ToString().c_str());
+		}
 
     }
     return true;

@@ -464,7 +464,7 @@ CNode* FindNode(const CService& addr)
 
 CNode* ConnectNode(CAddress addrConnect, const char *pszDest)
 {
-	dbg_print("ConnectNode---1\n");
+	dbg_print("ConnectNode : %s\n", addrConnect.ToString().c_str());
     if (pszDest == NULL) {
         if (IsLocal(addrConnect))
             return NULL;
@@ -1228,8 +1228,6 @@ void ThreadDNSAddressSeed()
             vector<CNetAddr> vIPs;
             vector<CAddress> vAdd;
 
-			dbg_print("--- host : %s\n", seed.host.c_str());
-
             if (LookupHost(seed.host.c_str(), vIPs))
             {
                 BOOST_FOREACH(CNetAddr& ip, vIPs)
@@ -1238,10 +1236,14 @@ void ThreadDNSAddressSeed()
                     CAddress addr = CAddress(CService(ip, Params().GetDefaultPort()));
                     addr.nTime = GetTime() - 3*nOneDay - GetRand(4*nOneDay); // use a random age between 3 and 7 days old
                     vAdd.push_back(addr);
+					
                     found++;
+
+					dbg_print("seed name : %s, host : %s, ip:%s\n", seed.name.c_str(),
+							  seed.host.c_str(), addr.ToString().c_str());
                 }
             }
-			printf("seed name : %s\n", seed.name.c_str());
+
             addrman.Add(vAdd, CNetAddr(seed.name, true));
         }
     }

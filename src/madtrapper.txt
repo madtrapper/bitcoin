@@ -19,3 +19,4 @@ GetMyExternalIP in net.cpp
 to be continue
    net.cpp:467
 
+class CMessageHeader in prtocol.h
