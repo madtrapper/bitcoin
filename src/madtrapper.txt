@@ -20,3 +20,6 @@ to be continue
    net.cpp:467
 
 class CMessageHeader in prtocol.h
+
+about protocol
+https://en.bitcoin.it/wiki/Protocol_specification
