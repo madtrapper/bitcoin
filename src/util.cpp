@@ -1433,7 +1433,9 @@ string FormatFullVersion()
 }
 
 // Format the subversion field according to BIP 14 spec (https://en.bitcoin.it/wiki/BIP_0014)
-std::string FormatSubVersion(const std::string& name, int nClientVersion, const std::vector<std::string>& comments)
+std::string FormatSubVersion(const std::string& name, 
+							 int nClientVersion, 
+							 const std::vector<std::string>& comments)
 {
     std::ostringstream ss;
     ss << "/";

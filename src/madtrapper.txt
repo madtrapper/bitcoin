@@ -23,3 +23,6 @@ class CMessageHeader in prtocol.h
 
 about protocol
 https://en.bitcoin.it/wiki/Protocol_specification
+
+void CNode::PushVersion() in net.cpp
+const std::string CLIENT_NAME("Satoshi"); in version.cpp
